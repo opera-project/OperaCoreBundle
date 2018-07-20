@@ -73,4 +73,9 @@ class BlockManager
 
         return $builder->getForm();
     }
+
+    public function getKindsOfBlocks()
+    {
+        return array_keys($this->blockTypes);
+    }
 }
