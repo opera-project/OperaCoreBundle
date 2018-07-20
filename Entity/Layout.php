@@ -23,6 +23,11 @@ class Layout
      */
     private $pages;
 
+    /**
+     * @ORM\Column(type="json", nullable=true)
+     */
+    private $configuration;
+
     public function __construct()
     {
         $this->pages = new ArrayCollection();
@@ -72,6 +77,18 @@ class Layout
                 $page->setLayout(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getConfiguration()
+    {
+        return $this->configuration;
+    }
+
+    public function setConfiguration($configuration): self
+    {
+        $this->configuration = $configuration;
 
         return $this;
     }

@@ -4,6 +4,9 @@ namespace Opera\CoreBundle\Cms;
 
 use Opera\CoreBundle\Entity\Block;
 use Opera\CoreBundle\BlockType\BlockTypeInterface;
+use Symfony\Component\Form\Form;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\FormFactoryInterface;
 
 class BlockManager
 {
@@ -11,9 +14,12 @@ class BlockManager
 
     private $twig;
 
-    public function __construct(\Twig_Environment $twig)
+    private $formFactory;
+
+    public function __construct(\Twig_Environment $twig, FormFactoryInterface $formFactory)
     {
         $this->twig = $twig;
+        $this->formFactory = $formFactory;
     }
 
     public function render(Block $block) : string
@@ -42,5 +48,26 @@ class BlockManager
     public function isValidBlockType(Block $block) : bool
     {
         return isset($this->blockTypes[$block->getType()]);
+    }
+
+    public function createAdminForm(Block $block) : Form
+    {
+        if (!$this->isValidBlockType($block)) {
+            throw new \LogicException('Cms cant manage this kind of blocks '.$block->getType());
+        }
+
+        $builder = $this->formFactory->createBuilder(FormType::class, $block);
+
+        // Common fields
+        $builder->add('name');
+
+        // Configuration fields
+        $blockType = $this->blockTypes[$block->getType()];
+
+        $configurationBuilder = $builder->create('configuration', FormType::class);
+        $blockType->createAdminConfigurationForm($configurationBuilder);
+        $builder->add($configurationBuilder);
+
+        return $builder->getForm();
     }
 }

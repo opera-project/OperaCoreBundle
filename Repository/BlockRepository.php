@@ -20,6 +20,29 @@ class BlockRepository extends ServiceEntityRepository
         parent::__construct($registry, Block::class);
     }
 
+    public function findForPageGroupedByAreas(Page $page)
+    {
+        $blocks = $this->createQueryBuilder('b')
+                    ->andWhere('b.page = :page')
+                    ->setParameter(':page', $page)
+                    ->orderBy('b.area, b.position')
+                    ->getQuery()
+                    ->getResult()
+        ;
+
+        $return = [];
+
+        foreach ($blocks as $block) {
+            if (!isset($return[$block->getArea()])) {
+                $return[$block->getArea()] = [];
+            }
+
+            $return[$block->getArea()][] = $block;
+        }
+
+        return $return;
+    }
+
     public function findForAreaAndPage(string $area, ?Page $page = null)
     {
         if (!$page) {
