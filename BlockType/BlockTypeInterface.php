@@ -2,6 +2,8 @@
 
 namespace Opera\CoreBundle\BlockType;
 
+use Symfony\Component\Form\FormBuilderInterface;
+
 interface BlockTypeInterface
 {
     public function getType() : string;
