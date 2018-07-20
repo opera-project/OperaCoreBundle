@@ -8,7 +8,7 @@ use Opera\CoreBundle\DependencyInjection\Compiler\BlockTypePass;
 
 class OperaCoreBundle extends Bundle
 {
-    protected function build(ContainerBuilder $container): void
+    public function build(ContainerBuilder $container): void
     {
         $container->addCompilerPass(new BlockTypePass());
     }
