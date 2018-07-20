@@ -66,7 +66,10 @@ class BlockManager
 
         $configurationBuilder = $builder->create('configuration', FormType::class);
         $blockType->createAdminConfigurationForm($configurationBuilder);
-        $builder->add($configurationBuilder);
+        
+        if ($configurationBuilder->count()) {
+            $builder->add($configurationBuilder);
+        }
 
         return $builder->getForm();
     }
