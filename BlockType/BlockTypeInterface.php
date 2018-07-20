@@ -10,4 +10,5 @@ interface BlockTypeInterface
     
     public function getVariables() : array;
     
+    public function createAdminConfigurationForm(FormBuilderInterface $builder);
 }
