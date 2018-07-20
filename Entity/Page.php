@@ -222,4 +222,9 @@ class Page
 
         return $this;
     }
+
+    public function __toString()
+    {
+        return $this->getTitle();
+    }
 }
