@@ -29,7 +29,7 @@ class BlockManager
         ]);
 
         return $this->twig->render(
-            sprintf('blocks/%s.html.twig', $blockType->getTemplate()),
+            $blockType->getTemplate(),
             $variables
         );
     }

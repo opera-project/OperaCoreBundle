@@ -8,7 +8,7 @@ abstract class BaseBlock implements BlockTypeInterface
 {
     public function getTemplate() : string
     {
-        return $this->getType();
+        return sprintf('blocks/%s.html.twig', $this->getType());
     }
 
     public function getVariables() : array
