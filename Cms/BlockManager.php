@@ -56,7 +56,7 @@ class BlockManager
             throw new \LogicException('Cms cant manage this kind of blocks '.$block->getType());
         }
 
-        $builder = $this->formFactory->createBuilder(FormType::class, $block);
+        $builder = $this->formFactory->createNamedBuilder('block_'.$block->getId(), FormType::class, $block);
 
         // Common fields
         $builder->add('name');
