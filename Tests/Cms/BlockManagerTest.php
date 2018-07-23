@@ -7,6 +7,7 @@ use Opera\CoreBundle\Cms\BlockManager;
 use Opera\CoreBundle\Entity\Block;
 use Opera\CoreBundle\BlockType\BlockTypeInterface;
 use Opera\CoreBundle\BlockType\BaseBlock;
+use Symfony\Component\Form\FormFactory;
 
 class TextBlockType extends BaseBlock implements BlockTypeInterface
 {
@@ -22,7 +23,7 @@ class TextBlockType extends BaseBlock implements BlockTypeInterface
     public function getTemplate() : string
     {
         if ($this->type) {
-            return $this->type;
+            return sprintf('blocks/%s.html.twig', $this->type);
         }
 
         return parent::getTemplate();
@@ -40,10 +41,14 @@ class BlockManagerTest extends TestCase
 
     public function setUp()
     {
+        $formFactory = $this->getMockBuilder(FormFactory::class)
+                        ->disableOriginalConstructor()
+                        ->getMock();
         $this->manager = new BlockManager(
             new \Twig_Environment(
                 new \Twig_Loader_Filesystem(__DIR__.'/../templates')
-            )
+            ),
+            $formFactory
         );
     }
 

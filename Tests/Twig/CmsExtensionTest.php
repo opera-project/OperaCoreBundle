@@ -7,6 +7,7 @@ use Opera\CoreBundle\Cms\Context;
 use Opera\CoreBundle\Cms\BlockManager;
 use Opera\CoreBundle\Repository\BlockRepository;
 use Opera\CoreBundle\Tests\TestCase;
+use Symfony\Component\Form\FormFactory;
 
 class CmsExtensionTest extends TestCase
 {
@@ -25,7 +26,10 @@ class CmsExtensionTest extends TestCase
         $cmsContext->setVariables([
             'hello' => 'hello world',
         ]);
-        $blockManager = new BlockManager($twig);
+        $formFactory = $this->getMockBuilder(FormFactory::class)
+                        ->disableOriginalConstructor()
+                        ->getMock();
+        $blockManager = new BlockManager($twig, $formFactory);
         $blockRepository = $this->getMockBuilder(BlockRepository::class)
                                 ->disableOriginalConstructor()
                                 ->getMock();
