@@ -39,6 +39,6 @@ class CmsRoutesLoader extends Loader
 
     public function supports($resource, $type = null)
     {
-        return 'cms' === $type;
+        return 'opera' === $type;
     }
 }
