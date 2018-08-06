@@ -57,12 +57,9 @@ class CmsExtension extends AbstractExtension
 
     /**
      * cms_render('twig {{ code }}')
-     * @todo
      */
     public function render(string $twigTemplate) : string
     {   
-        $tplName = uniqid('cms_render_', true);
-
         $twig = new \Twig_Environment(new \Twig_Loader_Array());        
         $template = $twig->createTemplate($twigTemplate);
         
