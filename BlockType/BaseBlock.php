@@ -4,7 +4,7 @@ namespace Opera\CoreBundle\BlockType;
 
 use Symfony\Component\Form\FormBuilderInterface;
 
-abstract class BaseBlock implements BlockTypeInterface
+abstract class BaseBlock
 {
 
     public function getTemplate() : string
