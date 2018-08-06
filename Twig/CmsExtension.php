@@ -57,7 +57,6 @@ class CmsExtension extends AbstractExtension
 
     /**
      * cms_render('twig {{ code }}')
-     * @todo
      */
     public function render(string $twigTemplate) : string
     {   
