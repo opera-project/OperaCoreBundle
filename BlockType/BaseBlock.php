@@ -3,16 +3,17 @@
 namespace Opera\CoreBundle\BlockType;
 
 use Symfony\Component\Form\FormBuilderInterface;
+use Opera\CoreBundle\Entity\Block;
 
 abstract class BaseBlock implements BlockTypeInterface
 {
 
-    public function getTemplate() : string
+    public function getTemplate(Block $block) : string
     {
         return sprintf('blocks/%s.html.twig', $this->getType());
     }
 
-    public function getVariables() : array
+    public function getVariables(Block $block) : array
     {
         return [];
     }

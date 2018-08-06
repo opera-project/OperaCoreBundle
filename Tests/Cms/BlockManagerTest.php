@@ -20,16 +20,16 @@ class TextBlockType extends BaseBlock implements BlockTypeInterface
         return 'text';
     }
 
-    public function getTemplate() : string
+    public function getTemplate(Block $block) : string
     {
         if ($this->type) {
             return sprintf('blocks/%s.html.twig', $this->type);
         }
 
-        return parent::getTemplate();
+        return parent::getTemplate($block);
     }
 
-    public function getVariables() : array
+    public function getVariables(Block $block) : array
     {
         return $this->variables;
     }

@@ -30,12 +30,12 @@ class BlockManager
 
         $blockType = $this->blockTypes[$block->getType()];
 
-        $variables = array_merge($blockType->getVariables(), [
+        $variables = array_merge($blockType->getVariables($block), [
             'block' => $block,
         ]);
 
         return $this->twig->render(
-            $blockType->getTemplate(),
+            $blockType->getTemplate($block),
             $variables
         );
     }
