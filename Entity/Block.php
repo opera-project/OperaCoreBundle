@@ -26,7 +26,7 @@ class Block
     private $type;
 
     /**
-     * @ORM\Column(type="json", nullable=true)
+     * @ORM\Column(type="object", nullable=true)
      */
     private $configuration;
 
@@ -76,7 +76,7 @@ class Block
     }
 
     public function getConfiguration()
-    {
+    { 
         return $this->configuration;
     }
 
