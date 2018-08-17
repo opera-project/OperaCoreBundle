@@ -4,6 +4,7 @@ namespace Opera\CoreBundle\BlockType;
 
 use Symfony\Component\Form\FormBuilderInterface;
 use Opera\CoreBundle\Entity\Block;
+use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 
 abstract class BaseBlock
 {
@@ -21,4 +22,9 @@ abstract class BaseBlock
     public function createAdminConfigurationForm(FormBuilderInterface $builder)
     {
     }
+
+    public function configure(NodeDefinition $rootNode)
+    {
+    }
+
 }
