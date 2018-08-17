@@ -7,6 +7,8 @@ use Opera\CoreBundle\BlockType\BlockTypeInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+use Symfony\Component\Config\Definition\Processor;
 
 class BlockManager
 {
@@ -72,7 +74,44 @@ class BlockManager
                     ->get('configuration');
         }
 
+        $this->cleanBlockConfiguration($block);
+
         return $builder->getForm();
+    }
+
+    public function cleanBlockConfiguration(Block $block) : Block
+    {
+        $config = $this->validateBlockConfiguration($block);
+
+        $block->setConfiguration($config['configuration']);
+        $block->setName($config['name']);
+
+        return $block;
+    }
+
+    protected function validateBlockConfiguration(Block $block) : array
+    {
+        if (!$this->isValidBlockType($block)) {
+            throw new \LogicException('Cms cant manage this kind of blocks '.$block->getType());
+        }
+
+        $blockType = $this->blockTypes[$block->getType()];
+        
+        $rootNode = new ArrayNodeDefinition('root');
+        $blockNode   = $rootNode->children();
+        $blockNode->scalarNode('name')->isRequired()->end();
+
+        $configNode = $blockNode->arrayNode('configuration');
+        $blockType->configure($configNode);
+
+        $processor = new Processor();
+        
+        return $processor->process($rootNode->getNode(), [
+            'root' => [
+                'name' => $block->getName(),
+                'configuration' => $block->getConfiguration(),
+            ]
+        ]);
     }
 
     public function getKindsOfBlocks()

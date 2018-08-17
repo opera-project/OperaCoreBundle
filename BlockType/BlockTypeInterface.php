@@ -4,6 +4,7 @@ namespace Opera\CoreBundle\BlockType;
 
 use Symfony\Component\Form\FormBuilderInterface;
 use Opera\CoreBundle\Entity\Block;
+use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 
 interface BlockTypeInterface
 {
@@ -14,4 +15,6 @@ interface BlockTypeInterface
     public function getVariables(Block $block) : array;
     
     public function createAdminConfigurationForm(FormBuilderInterface $builder);
+
+    public function configure(NodeDefinition $rootNode);
 }
