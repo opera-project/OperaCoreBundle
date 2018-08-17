@@ -32,3 +32,8 @@ services:
 
     Opera\CoreBundle\Cms\Context:
         public: true
+    
+    Opera\CoreBundle\Form\Type\OperaAdminAutocompleteType:
+        arguments: [ '@doctrine', '@easyadmin.config.manager' ]
+        tags: 
+            - { name: 'form.type', alias: 'operaadmin_autocomplete' }

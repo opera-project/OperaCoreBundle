@@ -25,6 +25,7 @@ abstract class BaseBlock
 
     public function configure(NodeDefinition $rootNode)
     {
+        $rootNode->prototype('variable')->end();
     }
 
 }
