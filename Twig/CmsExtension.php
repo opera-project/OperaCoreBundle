@@ -45,11 +45,11 @@ class CmsExtension extends AbstractExtension
         $out = '';
 
         foreach ($blocks as $block) {
-            $out .= sprintf('<div id="block_%s">', $block->getId());
+            $out .= sprintf('<!-- block id="block_%s" -->', $block->getId());
 
             $out .= $this->blockManager->render($block);
 
-            $out .= '</div>';
+            $out .= sprintf('<!-- /block id="block_%s" -->', $block->getId());
         }
 
         return $out;
