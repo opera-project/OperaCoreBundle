@@ -31,7 +31,11 @@ class RouterListener implements EventSubscriberInterface
             return;
         }
 
-        $request->attributes->set('page' , $page);
+        $request->attributes->set('_opera_page' , $page);
+        $request->attributes->set('_route' , '_opera_page');      
+        $request->attributes->set('_route_params', [
+            '_opera_page_path' => ltrim($request->getPathInfo(), '/'),
+        ]);  
         $request->attributes->set('_controller' , 'Opera\CoreBundle\Controller\PageController::index');
     }
 
@@ -39,7 +43,7 @@ class RouterListener implements EventSubscriberInterface
     {
         $request = $event->getRequest();
 
-        if ($request->attributes->has('page')) {
+        if ($request->attributes->has('_opera_page')) {
             // routing is already done
             return;
         }
@@ -54,7 +58,7 @@ class RouterListener implements EventSubscriberInterface
             return;
         }
 
-        $request->attributes->set('page' , $page);
+        $request->attributes->set('_opera_page' , $page);
     }
 
     public static function getSubscribedEvents()

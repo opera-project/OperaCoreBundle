@@ -8,10 +8,10 @@ abstract class BaseController extends Controller
 {   
     protected function renderPage(array $variables = array())
     {
-        $page = $this->getRequest()->get('page');
+        $page = $this->getRequest()->get('_opera_page');
 
         $variables = array_merge($variables, [
-            'page' => $page,
+            '_opera_page' => $page,
         ]);
         $this->get(\Opera\CoreBundle\Cms\Context::class)->setVariables($variables);
 
