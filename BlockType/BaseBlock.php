@@ -14,7 +14,7 @@ abstract class BaseBlock
         return sprintf('blocks/%s.html.twig', $this->getType());
     }
 
-    public function getVariables(Block $block) : array
+    public function execute(Block $block) : array
     {
         return [];
     }

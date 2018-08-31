@@ -32,7 +32,7 @@ class BlockManager
 
         $blockType = $this->blockTypes[$block->getType()];
 
-        $variables = array_merge($blockType->getVariables($block), [
+        $variables = array_merge($blockType->execute($block), [
             'block' => $block,
         ]);
 

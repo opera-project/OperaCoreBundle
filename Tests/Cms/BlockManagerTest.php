@@ -29,7 +29,7 @@ class TextBlockType extends BaseBlock implements BlockTypeInterface
         return parent::getTemplate($block);
     }
 
-    public function getVariables(Block $block) : array
+    public function execute(Block $block) : array
     {
         return $this->variables;
     }
