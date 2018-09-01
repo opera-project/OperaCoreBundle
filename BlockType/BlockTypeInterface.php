@@ -12,7 +12,7 @@ interface BlockTypeInterface
 
     public function getTemplate(Block $block) : string;
     
-    public function execute(Block $block) : array;
+    public function execute(Block $block);
     
     public function createAdminConfigurationForm(FormBuilderInterface $builder);
 

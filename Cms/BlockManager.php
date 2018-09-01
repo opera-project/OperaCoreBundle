@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Processor;
+use Symfony\Component\HttpFoundation\Response;
 
 class BlockManager
 {
@@ -18,10 +19,13 @@ class BlockManager
 
     private $formFactory;
 
-    public function __construct(\Twig_Environment $twig, FormFactoryInterface $formFactory)
+    private $context;
+
+    public function __construct(\Twig_Environment $twig, FormFactoryInterface $formFactory, Context $context)
     {
         $this->twig = $twig;
         $this->formFactory = $formFactory;
+        $this->context = $context;
     }
 
     public function render(Block $block) : string
@@ -32,7 +36,15 @@ class BlockManager
 
         $blockType = $this->blockTypes[$block->getType()];
 
-        $variables = array_merge($blockType->execute($block), [
+        $ctrlVariables = $blockType->execute($block);
+
+        if ($ctrlVariables instanceof Response) {
+            $this->context->addResponse($ctrlVariables);
+
+            return $ctrlVariables->getContent();
+        }
+        
+        $variables = array_merge($ctrlVariables, [
             'block' => $block,
         ]);
 
