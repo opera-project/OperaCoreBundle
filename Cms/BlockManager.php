@@ -31,7 +31,7 @@ class BlockManager
     public function render(Block $block) : string
     {
         if (!$this->isValidBlockType($block)) {
-            throw new \LogicException('Cms cant manage this kind of blocks '.$block->getType());
+            throw new \LogicException('1Cms cant manage this kind of blocks '.$block->getType());
         }
 
         $blockType = $this->blockTypes[$block->getType()];
@@ -80,7 +80,6 @@ class BlockManager
 
         $configurationBuilder = $builder->create('configuration', FormType::class);
         $blockType->createAdminConfigurationForm($configurationBuilder);
-        
         if ($configurationBuilder->count()) {
             $builder->add($configurationBuilder)
                     ->get('configuration');

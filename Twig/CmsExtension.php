@@ -10,6 +10,7 @@ use Opera\CoreBundle\Entity\Page;
 use Symfony\Component\HttpKernel\Controller\ControllerReference;
 use Opera\CoreBundle\Cms\BlockManager;
 use Opera\CoreBundle\Cms\Context;
+use Twig\Environment as TwigEnvironment;
 
 class CmsExtension extends AbstractExtension
 {
@@ -19,11 +20,14 @@ class CmsExtension extends AbstractExtension
 
     private $cmsContext;
 
-    public function __construct(BlockRepository $blockRepository, BlockManager $blockManager, Context $cmsContext)
+    private $sfTwig;
+
+    public function __construct(BlockRepository $blockRepository, BlockManager $blockManager, Context $cmsContext, TwigEnvironment $sfTwig)
     {
         $this->blockRepository = $blockRepository;
         $this->blockManager = $blockManager;
         $this->cmsContext = $cmsContext;
+        $this->sfTwig = $sfTwig;
     }
 
     public function getFunctions(): array
@@ -57,14 +61,17 @@ class CmsExtension extends AbstractExtension
 
     /**
      * cms_render('twig {{ code }}')
+     * cms_render('twig {{ code }}', { complement: 'more context var' })
      */
-    public function render(string $twigTemplate) : string
+    public function render(string $twigTemplate, array $block = array()) : string
     {   
-        $twig = new \Twig_Environment(new \Twig_Loader_Array());        
-        $template = $twig->createTemplate($twigTemplate);
-        
+        $template = $this->sfTwig->createTemplate($twigTemplate);
+
         return $template->render(
-            $this->cmsContext->toArray()
+            array_merge(
+                $this->cmsContext->toArray(),
+                $block
+            )
         );
     }
 }
