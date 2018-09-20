@@ -5,6 +5,7 @@ namespace Opera\CoreBundle\Repository;
 use Opera\CoreBundle\Entity\Page;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Opera\CoreBundle\Routing\RoutingUtils;
 
 /**
  * @method Page|null find($id, $lockMode = null, $lockVersion = null)
@@ -52,5 +53,26 @@ class PageRepository extends ServiceEntityRepository
                     ->setParameter('status', 'published')
                     ->getQuery()
                     ->getOneOrNullResult();
+    }
+
+    public function findOnePublishedWithPatternMatch(string $pathInfo)
+    {
+        $pages = $this->createQueryBuilder('p')
+                ->innerJoin('p.layout', 'l')
+                ->addSelect('l')
+                ->andWhere('p.route IS NULL')
+                ->andWhere('p.is_regexp = true')
+                ->andWhere('p.status = :status')
+                ->setParameter('status', 'published')
+                ->getQuery()
+                ->getResult();
+
+                
+        foreach ($pages as $page) {
+            // Convert to a real regexp
+            if (preg_match(RoutingUtils::convertPathToRegexp($page->getSlug()), $pathInfo)) {
+                return $page;
+            }
+        }
     }
 }

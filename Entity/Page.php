@@ -72,6 +72,11 @@ class Page
      */
     private $blocks;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $is_regexp = false;
+
     public function __construct()
     {
         $this->blocks = new ArrayCollection();
@@ -217,6 +222,18 @@ class Page
                 $block->setPage(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getIsRegexp(): bool
+    {
+        return $this->is_regexp;
+    }
+
+    public function setIsRegexp(bool $is_regexp): self
+    {
+        $this->is_regexp = $is_regexp;
 
         return $this;
     }

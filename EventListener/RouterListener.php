@@ -6,6 +6,7 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Opera\CoreBundle\Repository\PageRepository;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Opera\CoreBundle\Routing\RoutingUtils;
 
 class RouterListener implements EventSubscriberInterface
 {
@@ -50,6 +51,19 @@ class RouterListener implements EventSubscriberInterface
         }
 
         if (!$request->attributes->get('_route')) {
+            return;
+        }
+
+        if ($request->attributes->get('_route') == '_opera_page') {
+            $page = $this->pageRepository->findOnePublishedWithPatternMatch($request->getPathInfo());
+
+            if (!$page) {
+                return;
+            }
+
+            $request->attributes->set('_route_params', RoutingUtils::getRouteVariables($page->getSlug(), $request->getPathInfo()));
+            $request->attributes->set('_opera_page' , $page);
+            $request->attributes->set('_controller' , 'Opera\CoreBundle\Controller\PageController::index');
             return;
         }
 
