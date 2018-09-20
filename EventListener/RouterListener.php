@@ -25,7 +25,8 @@ class RouterListener implements EventSubscriberInterface
             return;
         }
 
-        $page = $this->pageRepository->findOnePublishedWithoutRouteAndSlug(ltrim($request->getPathInfo(), '/'));
+        $pathInfo = rtrim(ltrim($request->getPathInfo(), '/'), '/');
+        $page = $this->pageRepository->findOnePublishedWithoutRouteAndSlug($pathInfo);
 
         if (!$page) {
             return;
@@ -34,7 +35,7 @@ class RouterListener implements EventSubscriberInterface
         $request->attributes->set('_opera_page' , $page);
         $request->attributes->set('_route' , '_opera_page');      
         $request->attributes->set('_route_params', [
-            '_opera_page_path' => ltrim($request->getPathInfo(), '/'),
+            '_opera_page_path' => $pathInfo,
         ]);  
         $request->attributes->set('_controller' , 'Opera\CoreBundle\Controller\PageController::index');
     }
