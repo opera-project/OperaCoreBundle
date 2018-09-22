@@ -61,7 +61,13 @@ class RouterListener implements EventSubscriberInterface
                 return;
             }
 
-            $request->attributes->set('_route_params', RoutingUtils::getRouteVariables($page->getSlug(), $request->getPathInfo()));
+            $routeVariables = RoutingUtils::getRouteVariables($page->getSlug(), $request->getPathInfo());
+
+            foreach ($routeVariables as $key => $value) {
+                $request->query->set($key, $value);
+            }
+
+            $request->attributes->set('_route_params', $routeVariables);
             $request->attributes->set('_opera_page' , $page);
             $request->attributes->set('_controller' , 'Opera\CoreBundle\Controller\PageController::index');
             return;
