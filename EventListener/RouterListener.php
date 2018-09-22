@@ -12,9 +12,12 @@ class RouterListener implements EventSubscriberInterface
 {
     private $pageRepository;
 
-    public function __construct(PageRepository $pageRepository)
+    private $routePrefix;
+
+    public function __construct(PageRepository $pageRepository, string $routePrefix)
     {
         $this->pageRepository = $pageRepository;
+        $this->routePrefix    = $routePrefix;
     }
 
     public function onKernelRequest(GetResponseEvent $event)
@@ -26,7 +29,8 @@ class RouterListener implements EventSubscriberInterface
             return;
         }
 
-        $pathInfo = rtrim(ltrim($request->getPathInfo(), '/'), '/');
+        $pathInfo = preg_replace('#^'.addslashes($this->routePrefix).'#', '', $request->getPathInfo());
+        $pathInfo = rtrim(ltrim($pathInfo, '/'), '/');
         $page = $this->pageRepository->findOnePublishedWithoutRouteAndSlug($pathInfo);
 
         if (!$page) {

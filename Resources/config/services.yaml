@@ -37,3 +37,8 @@ services:
         arguments: [ '@doctrine', '@easyadmin.config.manager' ]
         tags: 
             - { name: 'form.type', alias: 'operaadmin_autocomplete' }
+
+    Opera\CoreBundle\EventListener\RouterListener:
+        arguments:
+            - '@Opera\CoreBundle\Repository\PageRepository'
+            - '%opera_core.route_prefix%'
