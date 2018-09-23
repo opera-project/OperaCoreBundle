@@ -9,7 +9,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\ControllerTrait;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 
-
 class <?= $class_name ?> extends BaseBlock implements BlockTypeInterface, ContainerAwareInterface
 {
     use ControllerTrait;
