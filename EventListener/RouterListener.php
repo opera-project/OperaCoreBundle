@@ -59,7 +59,7 @@ class RouterListener implements EventSubscriberInterface
         }
 
         if ($request->attributes->get('_route') == '_opera_page') {
-            $pathInfo = preg_replace('#^'.addslashes($this->routePrefix).'#', '', $request->getPathInfo());
+            $pathInfo = '/'.preg_replace('#^'.addslashes($this->routePrefix).'#', '', $request->getPathInfo());
             $page = $this->pageRepository->findOnePublishedWithPatternMatch($pathInfo);
 
             if (!$page) {
