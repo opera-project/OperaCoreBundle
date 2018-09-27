@@ -31,7 +31,7 @@ class BlockManager
     public function render(Block $block) : string
     {
         if (!$this->isValidBlockType($block)) {
-            throw new \LogicException('1Cms cant manage this kind of blocks '.$block->getType());
+            throw new \LogicException('Cms cant manage this kind of blocks '.$block->getType());
         }
 
         $blockType = $this->blockTypes[$block->getType()];
@@ -44,9 +44,13 @@ class BlockManager
             return $ctrlVariables->getContent();
         }
         
-        $variables = array_merge($ctrlVariables, [
-            'block' => $block,
-        ]);
+        $variables = array_merge(
+            $this->context->toArray(),
+            $ctrlVariables, 
+            [
+                'block' => $block,
+            ]
+        );
 
         return $this->twig->render(
             $blockType->getTemplate($block),
