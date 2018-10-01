@@ -243,7 +243,7 @@ class Page
         return $this;
     }
 
-    public function getComplementaryMeta(): bool
+    public function getComplementaryMeta(): ?string
     {
         return $this->complementary_meta;
     }
