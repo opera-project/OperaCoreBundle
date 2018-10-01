@@ -42,14 +42,19 @@ class Page
     private $status;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="text",  nullable=true)
      */
     private $meta_keyword;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      */
     private $meta_description;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $complementary_meta;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -234,6 +239,18 @@ class Page
     public function setIsRegexp(bool $is_regexp): self
     {
         $this->is_regexp = $is_regexp;
+
+        return $this;
+    }
+
+    public function getComplementaryMeta(): bool
+    {
+        return $this->complementary_meta;
+    }
+
+    public function setComplementaryMeta(string $complementary_meta): self
+    {
+        $this->complementary_meta = $complementary_meta;
 
         return $this;
     }
