@@ -57,6 +57,11 @@ class Page
     private $complementary_meta;
 
     /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $rel_meta;
+
+    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $route;
@@ -249,6 +254,18 @@ class Page
     }
 
     public function setComplementaryMeta(string $complementary_meta): self
+    {
+        $this->complementary_meta = $complementary_meta;
+
+        return $this;
+    }
+
+    public function getRelMeta(): ?string
+    {
+        return $this->complementary_meta;
+    }
+
+    public function setRelMeta(string $complementary_meta): self
     {
         $this->complementary_meta = $complementary_meta;
 
