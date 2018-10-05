@@ -42,11 +42,6 @@ services:
         arguments:
             - '@Opera\CoreBundle\Repository\PageRepository'
             - '%opera_core.route_prefix%'
-
-    Opera\CoreBundle\EventListener\DoctrineCacheListener:
-        lazy: true
-        tags:
-            - { name: "doctrine.orm.entity_listener", entity: "Opera\\CoreBundle\\Entity\\Block", event: preFlush }
         
     opera.cache:
         class: Symfony\Component\Cache\Adapter\TagAwareAdapter

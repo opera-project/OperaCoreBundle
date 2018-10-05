@@ -8,6 +8,7 @@ use Opera\CoreBundle\Event\BlockPerRenderEvent;
 use Opera\CoreBundle\Event\BlockPostRenderEvent;
 use Opera\CoreBundle\Event\BlockPostBuildFormEvent;
 use Opera\CoreBundle\Event\BlockPostConfigureEvent;
+use Opera\CoreBundle\Event\BlockUpdatedEvent;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -104,6 +105,11 @@ class CacheListener implements EventSubscriberInterface
                 ->end()
             ->end();
     }
+
+    public function onBlockUpdated(BlockUpdatedEvent $event)
+    {
+        $this->cacheManager->invalidateByTag($event->getBlockType(), $event->getBlock());
+    }
     
     public static function getSubscribedEvents()
     {
@@ -112,6 +118,7 @@ class CacheListener implements EventSubscriberInterface
             'opera.block.post_render' => 'onBlockPostRender',
             'opera.block.post_build_admin_form' => 'onBlockPostBuildAdminForm',
             'opera.block.post_configure' => 'onBlockPostConfigure',
+            'opera.block.updated' => 'onBlockUpdated',
         ];
     }
 }
