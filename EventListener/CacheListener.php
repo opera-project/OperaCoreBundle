@@ -13,6 +13,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Opera\CoreBundle\BlockType\CacheableBlockInterface;
+use Opera\CoreBundle\Entity\Block;
 
 class CacheListener implements EventSubscriberInterface
 {
@@ -104,8 +105,9 @@ class CacheListener implements EventSubscriberInterface
             ->end();
     }
 
-    public function onBlockFlush(Block $block)
+    public function onFlush(Block $block)
     {
+        throw new \Exception('kk');
         $this->cacheManager->invalidateByTag($this->blockManager->getBlockType($block), $block);
     }
 

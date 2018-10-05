@@ -2,7 +2,7 @@
 
 namespace Opera\CoreBundle\Cms;
 
-use Psr\Cache\CacheItemPoolInterface;
+use Symfony\Component\Cache\Adapter\TagAwareAdapterInterface;
 use Opera\CoreBundle\BlockType\CacheableBlockInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Opera\CoreBundle\BlockType\BlockTypeInterface;
@@ -17,7 +17,7 @@ class CacheManager
     
     private $requestStack;
 
-    public function __construct(CacheItemPoolInterface $cacheItemPool, RequestStack $requestStack)
+    public function __construct(TagAwareAdapterInterface $cacheItemPool, RequestStack $requestStack)
     {
         $this->cacheItemPool = $cacheItemPool;
         $this->requestStack = $requestStack;
