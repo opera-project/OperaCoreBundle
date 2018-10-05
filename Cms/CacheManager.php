@@ -109,6 +109,10 @@ class CacheManager
 
     public function invalidateByTag(BlockTypeInterface $blockType, Block $block)
     {
+        if (!$blockType instanceof CacheableBlockInterface) {
+            return;
+        }
+        
         $config = $this->getCacheConfig($blockType, $block);
 
         $this->cacheItemPool->invalidateTags([ $config['cache_key'] ]);

@@ -104,13 +104,7 @@ class CacheListener implements EventSubscriberInterface
                 ->end()
             ->end();
     }
-
-    public function onFlush(Block $block)
-    {
-        throw new \Exception('kk');
-        $this->cacheManager->invalidateByTag($this->blockManager->getBlockType($block), $block);
-    }
-
+    
     public static function getSubscribedEvents()
     {
         return [
