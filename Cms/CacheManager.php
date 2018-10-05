@@ -67,7 +67,7 @@ class CacheManager
 
         foreach (explode(',',$config['vary']) as $vary) {
             $vary = trim($vary);
-            $key .= $vary.'_'.$request->headers->get($vary).'__';
+            $key .= $vary.'_'.Urlizer::urlize($request->headers->get($vary)).'__';
         }
 
         return $key;
@@ -112,7 +112,7 @@ class CacheManager
         if (!$blockType instanceof CacheableBlockInterface) {
             return;
         }
-        
+
         $config = $this->getCacheConfig($blockType, $block);
 
         $this->cacheItemPool->invalidateTags([ $config['cache_key'] ]);
