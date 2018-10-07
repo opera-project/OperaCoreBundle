@@ -181,8 +181,12 @@ class Page
         return $this->slug;
     }
 
-    public function setSlug(string $slug): self
+    public function setSlug(?string $slug): self
     {
+        if (is_null($slug)) {
+            $slug = '';
+        }
+        
         $this->slug = $slug;
 
         return $this;
