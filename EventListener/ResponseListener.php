@@ -6,6 +6,7 @@ use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Opera\CoreBundle\Cms\Context;
+use Symfony\Component\HttpFoundation\Response;
 
 class ResponseListener implements EventSubscriberInterface
 {
@@ -20,6 +21,10 @@ class ResponseListener implements EventSubscriberInterface
     {
         foreach ($this->context->getResponses() as $response) {
             if ($response->isRedirection()) {
+                $event->setResponse($response);
+            }
+
+            if ($response->getStatusCode() != Response::HTTP_OK) {
                 $event->setResponse($response);
             }
         }
