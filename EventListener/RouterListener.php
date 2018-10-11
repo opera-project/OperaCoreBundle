@@ -40,7 +40,7 @@ class RouterListener implements EventSubscriberInterface
         $request->attributes->set('_opera_page' , $page);
         $request->attributes->set('_route' , '_opera_page');      
         $request->attributes->set('_route_params', [
-            '_opera_page_path' => $pathInfo,
+            '_opera_page_path' => urldecode($pathInfo),
         ]);  
         $request->attributes->set('_controller' , 'Opera\CoreBundle\Controller\PageController::index');
     }
@@ -74,7 +74,7 @@ class RouterListener implements EventSubscriberInterface
 
             $pathInfo = rtrim(ltrim($pathInfo, '/'), '/');
             $request->attributes->set('_route_params', [
-                '_opera_page_path' => $pathInfo,
+                '_opera_page_path' => urldecode($pathInfo),
             ]);
             $request->attributes->set('_opera_page' , $page);
             $request->attributes->set('_controller' , 'Opera\CoreBundle\Controller\PageController::index');
