@@ -57,7 +57,7 @@ class CacheManager
         $request = $this->requestStack->getCurrentRequest();
         $key = $config['cache_key'];
 
-        if ($config['vary_query_string']) {
+        if ($config['vary_path_info']) {
             $key .= Urlizer::urlize($request->getPathInfo()).'__';
         }
 
