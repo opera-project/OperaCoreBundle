@@ -67,10 +67,9 @@ class PageRepository extends ServiceEntityRepository
                 ->getQuery()
                 ->getResult();
 
-                
         foreach ($pages as $page) {
             // Convert to a real regexp
-            if (preg_match(RoutingUtils::convertPathToRegexp($page->getSlug()), $pathInfo)) {
+            if (preg_match(RoutingUtils::convertPathToRegexp($page->getSlug(), $page->getRequirements() ?? []), $pathInfo)) {
                 return $page;
             }
         }
