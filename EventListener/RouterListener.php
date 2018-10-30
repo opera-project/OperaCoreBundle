@@ -66,7 +66,7 @@ class RouterListener implements EventSubscriberInterface
                 return;
             }
 
-            $routeVariables = RoutingUtils::getRouteVariables($page->getSlug(), $pathInfo);
+            $routeVariables = RoutingUtils::getRouteVariables($page->getSlug(), $pathInfo, $page->getRequirements() ?? []);
 
             foreach ($routeVariables as $key => $value) {
                 $request->attributes->set($key, $value);

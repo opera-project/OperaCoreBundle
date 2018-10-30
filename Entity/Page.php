@@ -78,6 +78,11 @@ class Page
     private $blocks;
 
     /**
+     * @ORM\Column(type="json", nullable=true)
+     */
+    private $requirements;
+
+    /**
      * @ORM\Column(type="boolean")
      */
     private $is_regexp = false;
@@ -255,6 +260,18 @@ class Page
     public function setComplementaryMeta(string $complementary_meta): self
     {
         $this->complementary_meta = $complementary_meta;
+
+        return $this;
+    }
+
+    public function getRequirements()
+    {
+        return $this->requirements;
+    }
+
+    public function setRequirements($requirements): self
+    {
+        $this->requirements = $requirements;
 
         return $this;
     }

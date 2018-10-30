@@ -6,16 +6,16 @@ use Symfony\Component\Routing\Route;
 
 class RoutingUtils
 {
-    private static function getCompiledRoute(string $regexpStr)
+    private static function getCompiledRoute(string $regexpStr, array $requirements = [])
     {
-        $route = new Route($regexpStr.'/');
-        
+        $route = new Route($regexpStr.'/', [], $requirements ?? []);
+
         return $route->compile();
     }
 
-    public static function convertPathToRegexp(string $regexpStr) : string
+    public static function convertPathToRegexp(string $regexpStr, array $requirements = []) : string
     {
-        $regex = self::getCompiledRoute($regexpStr)->getRegex();
+        $regex = self::getCompiledRoute($regexpStr, $requirements ?? [])->getRegex();
 
         // Support trailing slash
         if ($pos = strpos($regex, '/$')) {
@@ -25,12 +25,12 @@ class RoutingUtils
         return $regex;
     }
 
-    public static function getRouteVariables(string $regexpStr, string $pathInfo) : array
+    public static function getRouteVariables(string $regexpStr, string $pathInfo, array $requirements = []) : array
     {
-        $route = self::getCompiledRoute($regexpStr);
+        $route = self::getCompiledRoute($regexpStr, $requirements ?? []);
         $variables = [];
 
-        preg_match(self::convertPathToRegexp($regexpStr), $pathInfo, $matches);
+        preg_match(self::convertPathToRegexp($regexpStr, $requirements ?? []), $pathInfo, $matches);
 
         foreach ($route->getVariables() as $var) {
             $variables[$var] = $matches[$var];
