@@ -8,7 +8,6 @@ class RoutingUtils
 {
     private static function getCompiledRoute(string $regexpStr, array $requirements = [])
     {
-        dump($requirements);
         $route = new Route($regexpStr.'/', [], $requirements ?? []);
 
         return $route->compile();
