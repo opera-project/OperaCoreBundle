@@ -13,6 +13,7 @@ class OperaCoreExtension extends Extension
     {
         $config =  $this->processConfiguration($this->getConfiguration($configs, $container), $configs);
         $container->setParameter('opera_core.route_prefix', $config['route_prefix']);
+        $container->setParameter('opera_core.cacheable', $config['cacheable']);
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yaml');

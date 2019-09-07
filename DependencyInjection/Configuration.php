@@ -24,6 +24,10 @@ class Configuration implements ConfigurationInterface
                     ->defaultValue('/')
                     ->info('To prefix all your cms routes if you deploy under subfolder and dont want to change in db')
                 ->end()
+                ->booleanNode('cacheable')
+                    ->defaultValue(true)
+                    ->info('To prefix all your cms routes if you deploy under subfolder and dont want to change in db')
+                ->end()
             ->end()
         ;
         

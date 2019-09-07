@@ -51,5 +51,6 @@ services:
 
     Opera\CoreBundle\Cms\CacheManager:
         arguments:
-            - '@opera.cache'
+            $cacheItemPool: '@opera.cache'
+            $isCacheActive: '%opera_core.cacheable%'
 

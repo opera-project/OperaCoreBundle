@@ -17,10 +17,13 @@ class CacheManager
     
     private $requestStack;
 
-    public function __construct(TagAwareAdapterInterface $cacheItemPool, RequestStack $requestStack)
+    private $isCacheActive;
+
+    public function __construct(TagAwareAdapterInterface $cacheItemPool, RequestStack $requestStack, $isCacheActive)
     {
         $this->cacheItemPool = $cacheItemPool;
         $this->requestStack = $requestStack;
+        $this->isCacheActive = $isCacheActive;
     }
 
     public function isCacheable(BlockTypeInterface $blockType) : bool
@@ -29,7 +32,7 @@ class CacheManager
             return false;
         }
 
-        return $this->requestStack->getCurrentRequest()->isMethod('GET');
+        return $this->isCacheActive && $this->requestStack->getCurrentRequest()->isMethod('GET');
     }
 
     private function getCacheConfig(BlockTypeInterface $blockType, Block $block) : array
@@ -91,7 +94,7 @@ class CacheManager
         $config = $this->getCacheConfig($blockType, $block);
 
         $cache = $this->cacheItemPool->getItem($this->getCacheKeyWithVariation($config));
-        $cache->expiresAfter(\DateInterval::createFromDateString($config['expires_after'] ?? '1 second'));
+        $cache->expiresAfter(\DateInterval::createFromDateString($config['expires_after']));
         $cache->tag($config['cache_key']);
 
         if ($content instanceof Response) { 
