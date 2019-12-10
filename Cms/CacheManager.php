@@ -14,7 +14,7 @@ use Gedmo\Sluggable\Util\Urlizer;
 class CacheManager
 {
     private $cacheItemPool;
-    
+
     private $requestStack;
 
     private $isCacheActive;
@@ -26,7 +26,7 @@ class CacheManager
         $this->isCacheActive = $isCacheActive;
     }
 
-    public function isCacheable(BlockTypeInterface $blockType) : bool
+    public function isCacheable(BlockTypeInterface $blockType): bool
     {
         if (!$blockType instanceof CacheableBlockInterface) {
             return false;
@@ -35,7 +35,7 @@ class CacheManager
         return $this->isCacheActive && $this->requestStack->getCurrentRequest()->isMethod('GET');
     }
 
-    private function getCacheConfig(BlockTypeInterface $blockType, Block $block) : array
+    private function getCacheConfig(BlockTypeInterface $blockType, Block $block): array
     {
         $resolver = new OptionsResolver();
         $resolver->setRequired('cache_key');
@@ -43,7 +43,7 @@ class CacheManager
         $resolver->setRequired('vary');
 
         $resolver->setDefaults([
-            'cache_key' => 'block_'.$blockType->getType().'_'.$block->getId(),
+            'cache_key' => 'block_' . $blockType->getType() . '_' . $block->getId(),
             'expires_after' => '5 minutes',
             'vary' => '',
             'vary_path_info'    => true,
@@ -55,22 +55,22 @@ class CacheManager
         return $resolver->resolve($block->getConfiguration()['cache'] ?? []);
     }
 
-    private function getCacheKeyWithVariation(array $config) : string
+    private function getCacheKeyWithVariation(array $config): string
     {
         $request = $this->requestStack->getCurrentRequest();
         $key = $config['cache_key'];
 
         if ($config['vary_path_info']) {
-            $key .= Urlizer::urlize($request->getPathInfo()).'__';
+            $key .= Urlizer::urlize($request->getPathInfo()) . '__';
         }
 
         if ($config['vary_query_string'] && $request->getQueryString()) {
-            $key .= 'qs_'.Urlizer::urlize($request->getQueryString()).'__';
+            $key .= 'qs_' . Urlizer::urlize($request->getQueryString()) . '__';
         }
 
-        foreach (explode(',',$config['vary']) as $vary) {
+        foreach (explode(',', $config['vary']) as $vary) {
             $vary = trim($vary);
-            $key .= $vary.'_'.Urlizer::urlize($request->headers->get($vary)).'__';
+            $key .= $vary . '_' . Urlizer::urlize($request->headers->get($vary)) . '__';
         }
 
         return $key;
@@ -94,10 +94,10 @@ class CacheManager
         $config = $this->getCacheConfig($blockType, $block);
 
         $cache = $this->cacheItemPool->getItem($this->getCacheKeyWithVariation($config));
-        $cache->expiresAfter(\DateInterval::createFromDateString($config['expires_after']));
+        $cache->expiresAfter(\DateInterval::createFromDateString($config['expires_after'] ?? '1 second'));
         $cache->tag($config['cache_key']);
 
-        if ($content instanceof Response) { 
+        if ($content instanceof Response) {
             if (!$content->isCacheable()) {
                 return;
             }
@@ -118,7 +118,6 @@ class CacheManager
 
         $config = $this->getCacheConfig($blockType, $block);
 
-        $this->cacheItemPool->invalidateTags([ $config['cache_key'] ]);
+        $this->cacheItemPool->invalidateTags([$config['cache_key']]);
     }
-
 }
