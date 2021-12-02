@@ -94,7 +94,7 @@ class CacheManager
         $config = $this->getCacheConfig($blockType, $block);
 
         $cache = $this->cacheItemPool->getItem($this->getCacheKeyWithVariation($config));
-        $cache->expiresAfter(\DateInterval::createFromDateString($config['expires_after']));
+        $cache->expiresAfter(\DateInterval::createFromDateString($config['expires_after'] ? $config['expires_after'] : '1 second'));
         $cache->tag($config['cache_key']);
 
         if ($content instanceof Response) { 
